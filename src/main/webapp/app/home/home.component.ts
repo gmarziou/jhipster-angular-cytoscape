@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
+import * as cytoscape from 'cytoscape';
 
 @Component({
   selector: 'jhi-home',
@@ -13,11 +14,26 @@ import { Account } from 'app/core/user/account.model';
 export class HomeComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   authSubscription?: Subscription;
+  cy: any;
 
   constructor(private accountService: AccountService, private loginModalService: LoginModalService) {}
 
   ngOnInit(): void {
     this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+    this.cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements: [
+        { data: { id: 'a' } },
+        { data: { id: 'b' } },
+        {
+          data: {
+            id: 'ab',
+            source: 'a',
+            target: 'b',
+          },
+        },
+      ],
+    });
   }
 
   isAuthenticated(): boolean {

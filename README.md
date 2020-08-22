@@ -1,6 +1,79 @@
-# cyto
+# Cytoscape JHipster Angular
 
 This application was generated using JHipster 6.10.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.10.1](https://www.jhipster.tech/documentation-archive/v6.10.1).
+
+## Integrating Cytoscape into a JHipster Angular app
+
+To answer to https://stackoverflow.com/questions/63489529/using-external-js-library-with-jhipster
+
+Cytoscape looks like a nice tool, I never used it before so I integrated it from scratch however it could be easier using one of the few Angular wrappers that exist for it.
+
+The detailed instructions below which are similar to the ones from the Leaflet example from JHipster generated project's `README.md` with one difference about which bundle to import in `vendor.ts` and it could be the most important part Cytoscape JS can be used also in a Node app (I followed their doc which mentions webpack).
+
+1. Install cytoscape using `npm install --save-exact cytoscape`
+2. Install cytoscape types using `npm install --save-dev --save-exact @types/cytoscape`
+3. Edit `src/main/webapp/app/vendor.ts`
+
+```ts
+/* ESM version of cytoscape for webpack */
+import 'cytoscape/dist/cytoscape.esm.js';
+```
+
+4. Edit `src/main/webapp/app/home/home.component.html` to add a container for our graph
+
+```html
+<!-- cytoscape container -->
+<div id="cy"></div>
+```
+
+5.  Edit `src/main/webapp/app/home/home.scss` to style our container with at least width and height
+
+```scss
+#cy {
+  width: 400px;
+  height: 200px;
+}
+```
+
+6.  Edit `src/main/webapp/app/home/home.component.ts` to define our graph by importing cytoscape module, then initializing it in `ngOnInit()`
+
+```ts
+import * as cytoscape from 'cytoscape';
+
+@Component({
+  selector: 'jhi-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['home.scss'],
+})
+export class HomeComponent implements OnInit, OnDestroy {
+  account: Account | null = null;
+  authSubscription?: Subscription;
+  cy: any;
+
+  constructor(private accountService: AccountService, private loginModalService: LoginModalService) {}
+
+  ngOnInit(): void {
+    this.authSubscription = this.accountService.getAuthenticationState().subscribe(account => (this.account = account));
+    this.cy = cytoscape({
+      container: document.getElementById('cy'),
+      elements: [
+        { data: { id: 'a' } },
+        { data: { id: 'b' } },
+        {
+          data: {
+            id: 'ab',
+            source: 'a',
+            target: 'b'
+          }
+        }]
+    });
+  }
+
+```
+
+and here is the result:
+
+![Screenshot of home page with a Cytoscape graph](cytoscape.png)
 
 ## Development
 
