@@ -4,29 +4,29 @@ This application was generated using JHipster 6.10.1, you can find documentation
 
 ## Integrating Cytoscape into a JHipster Angular app
 
-To answer to https://stackoverflow.com/questions/63489529/using-external-js-library-with-jhipster
+I built this example to answer to https://stackoverflow.com/questions/63489529/using-external-js-library-with-jhipster
 
-Cytoscape looks like a nice tool, I never used it before so I integrated it from scratch however it could be easier using one of the few Angular wrappers that exist for it.
+[Cytoscape](https://js.cytoscape.org/) looks like a nice tool, I never used it before so I integrated it from scratch however it could be easier using one of the few Angular wrappers that exist for it.
 
-The detailed instructions below which are similar to the ones from the Leaflet example from JHipster generated project's `README.md` with one difference about which bundle to import in `vendor.ts` and it could be the most important part Cytoscape JS can be used also in a Node app (I followed their doc which mentions webpack).
+The detailed instructions below which are similar to the ones from the Leaflet example from JHipster generated project's `README.md` with one difference about which bundle to import in `vendor.ts` and it could be the most important part because Cytoscape JS can be used also in a Node app (I followed their doc which mentions webpack).
 
 1. Install cytoscape using `npm install --save-exact cytoscape`
 2. Install cytoscape types using `npm install --save-dev --save-exact @types/cytoscape`
-3. Edit `src/main/webapp/app/vendor.ts`
+3. Edit [src/main/webapp/app/vendor.ts](src/main/webapp/app/vendor.ts)
 
 ```ts
 /* ESM version of cytoscape for webpack */
 import 'cytoscape/dist/cytoscape.esm.js';
 ```
 
-4. Edit `src/main/webapp/app/home/home.component.html` to add a container for our graph
+4. Edit [src/main/webapp/app/home/home.component.html](src/main/webapp/app/home/home.component.html) to add a container for our graph
 
 ```html
 <!-- cytoscape container -->
 <div id="cy"></div>
 ```
 
-5.  Edit `src/main/webapp/app/home/home.scss` to style our container with at least width and height
+5.  Edit [src/main/webapp/app/home/home.scss](src/main/webapp/app/home/home.scss) to style our container with at least width and height
 
 ```scss
 #cy {
@@ -35,7 +35,7 @@ import 'cytoscape/dist/cytoscape.esm.js';
 }
 ```
 
-6.  Edit `src/main/webapp/app/home/home.component.ts` to define our graph by importing cytoscape module, then initializing it in `ngOnInit()`
+6.  Edit [src/main/webapp/app/home/home.component.ts](src/main/webapp/app/home/home.component.ts) to define our graph by importing cytoscape module, then initializing it in `ngOnInit()`
 
 ```ts
 import * as cytoscape from 'cytoscape';
